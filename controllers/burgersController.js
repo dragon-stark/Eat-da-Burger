@@ -9,9 +9,11 @@ router.get("/", function (req, res) {
 });
 
 router.get("/burgers", function (req, res) {
-  burger.all(function (burgerData) {
-    // wrapper for orm.js that using MySQL query callback will return burger_data, render to index with handlebar
-    res.render("index", { burger_data: burgerData });
+  // express callback response by calling burger.selectAllBurger
+  burger.all(function (data) {
+    // Wrapping the array of returned burgers in a object so it can be referenced inside our handlebars
+    var hbsObject = { burgers: data };
+    res.render("index", hbsObject);
   });
 });
 
@@ -27,12 +29,13 @@ router.post("/burgers/create", function (req, res) {
 });
 
 // put route -> back to index
-router.put("/burgers/:id", function (req, res) {
+router.put("/burgers/update/:id", function (req, res) {
   burger.update(req.params.id, function (result) {
     // wrapper for orm.js that using MySQL update callback will return a log to console,
     // render back to index with handle
     console.log(result);
-    res.sendStatus(200);
+    // Send back response and let page reload from .then in Ajax
+    res.json("/");
   });
 });
 

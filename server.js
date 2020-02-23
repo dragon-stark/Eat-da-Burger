@@ -13,10 +13,12 @@ var exphbs = require("express-handlebars");
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-var routes = require("./controllers/burgersController.js");
+var routes = require("./controllers/burgersController");
 
 app.use(routes);
 
+// listen on port 3000
+var PORT = process.env.PORT || 3000;
 app.listen(PORT, function () {
-  console.log("Listening on port:%s", PORT);
+  console.log("App listening on PORT " + PORT);
 });
